@@ -1,13 +1,35 @@
 #!/bin/bash
 
+# Written by Edouard Gouteux 08.2022, inspired and based from:
+# Marlene Tahedl's BATMAN tutorial, Andrew Jahn,
+# and disscussions from https://community.mrtrix.org
+
+display_usage() {
+    echo "$(basename $0) [Raw Diffusion] [RevPhaseImage] [AP bvec] [AP bval] [PA bvec] [PA bval] [Anatomical]"
+    echo "This script uses MRtrix to analyze diffusion data. It requires 7 arguments: 
+          1) The raw diffusion image;
+          2) The image acquired with the reverse phase-encoding direction;
+          3) The bvec file for the data acquired in the AP direction;
+          4) The bval file for the data acquired in the AP direction;
+          5) The bvec file for the data acquired in the PA direction;
+          6) The bval file for the data acquired in the PA direction;
+          7) The anatomical image"
+	}
+
+	if [ $# -le 6 ]
+	then
+         display_usage
+         exit 1
+	fi
+
 #inputs required in this order:
-RAW_DWI=$1
-REV_PHASE=$2
-AP_BVEC=$3
-AP_BVAL=$4
-PA_BVEC=$5
-PA_BVAL=$6
-ANAT=$7
+RAW_DWI=$1 #The raw diffusion image;
+REV_PHASE=$2 #The image acquired with the reverse phase-encoding direction;
+AP_BVEC=$3 #The bvec file for the data acquired in the AP direction;
+AP_BVAL=$4 #The bval file for the data acquired in the AP direction;
+PA_BVEC=$5 #The bvec file for the data acquired in the PA direction;
+PA_BVAL=$6 #The bval file for the data acquired in the PA direction;
+ANAT=$7 #The anatomical image"
 
 #Conversion of raw_dwi file to .mif format
 mrconvert $RAW_WDI dwi_AP.mif -fslgrad $AP_BVEC $AP_BVAL
