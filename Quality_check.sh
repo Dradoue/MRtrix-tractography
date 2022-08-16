@@ -31,7 +31,7 @@ mrfilter snr_raw.mif median  snr_filtered.mif
 # near strategic parts of the brain for tractography.
 
 # second solution for SNR calculation: 
-dwidenoise -noise noise_.mif dwi.SNRmif predwi_denoised.mif
+dwidenoise -noise noise_.mif dwi.mif predwi_denoised.mif
 mrstats -output mean -mask mask_preproc_unb.mif noise_.mif        # --> noise
 dwiextract -shell 0 predwi_denoised.mif - | mrstats -output mean -mask mask_preproc_unb.mif -allvolumes -        # --> signal in shell b=0
 # for us at b0 on one of our data: 64.84
