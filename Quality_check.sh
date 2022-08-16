@@ -22,21 +22,21 @@
 # As to the cut-off value, as mentioned above I would always recommend an 
 # SNR of at least 15 in the b=0 images – but more is always better!”
 
-dwiextract -bzero dwi.mif - | mrmath - mean -axis 3 mean_b0.mif
+dwiextract -bzero dwi.mif - | mrmath - mean -axis 3 mean_b0_.mif
 dwiextract -bzero dwi.mif - | mrmath - std -axis 3 std_b0.mif
-mrcalc mean_b0.mif std_b0.mif -div snr_raw.mif
+mrcalc mean_b0_.mif std_b0.mif -div snr_raw.mif
 mrfilter snr_raw.mif median  snr_filtered.mif
 
 # We get a nice brain map with values, we want the values to be 15 or more 
 # near strategic parts of the brain for tractography.
 
 # second solution for SNR calculation: 
-dwidenoise -noise noise.mif dwi.SNRmif predwi_denoised.mif
-mrstats -output mean -mask mask.mif noise.mif        # --> noise
-dwiextract -shell 0 predwi_denoised.mif - | mrstats -output mean -mask mask.mif -allvolumes -        # --> signal in shell b=0
+dwidenoise -noise noise_.mif dwi.SNRmif predwi_denoised.mif
+mrstats -output mean -mask mask_preproc_unb.mif noise_.mif        # --> noise
+dwiextract -shell 0 predwi_denoised.mif - | mrstats -output mean -mask mask_preproc_unb.mif -allvolumes -        # --> signal in shell b=0
 # for us at b0 on one of our data: 64.84
 
-dwiextract -shell 3000 predwi_denoised.mif - | mrstats -output mean -mask mask.mif -allvolumes -   #--> signal in shell b=3000
+dwiextract -shell 3000 predwi_denoised.mif - | mrstats -output mean -mask mask_preproc_unb.mif -allvolumes -   #--> signal in shell b=3000
 # for b3000 on one of our data: 6.91
 # recommandation: >5
 
