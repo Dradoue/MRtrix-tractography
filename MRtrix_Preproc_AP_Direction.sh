@@ -96,8 +96,8 @@ dwi2mask dwi_preproc_unbiased.mif mask_preproc_unb.mif
 # outlined in the BATMAN tutorial, with the only change being the dwi2fod call” 
 # i.e we use dhollander for function CSF and WM and then dwi2fod msnt_csd 
 # for CSF and WM like in BATMAN.
-dwi2response dhollander dwi_preproc_unbiased.mif response.txt -mask mask_preproc_unb.mif
-dwi2fod msmt_csd dwi_preproc_unbiased.mif response_wm.txt wmfod.mif response_csf.txt csf.mif - mask mask_preproc_unb.mif
+dwi2response dhollander dwi_preproc_unbiased.mif wm.txt gm.txt csf.txt -voxels voxels.mif -mask mask_preproc_unb.mif 
+dwi2fod msmt_csd dwi_preproc_unbiased.mif wm.txt wmfod.mif csf.txt csffod.mif -mask mask_preproc_unb.mif
 
 # FOD normalisation
 mtnormalise wmfod.mif wmfod_norm.mif csffod.mif csffod_norm.mif -mask mask_preproc_unb.mif
@@ -108,7 +108,7 @@ mrconvert $ANAT anat.mif
 
 # The following series of commands will take the average of the b0 images (which have the best contrast), 
 # convert them and the 5tt image to NIFTI format, and use it for coregistration.
-dwiextract dwi_den_preproc_unbiased.mif - -bzero | mrmath - mean mean_b0_processed.mif -axis 3
+dwiextract dwi_den_preproc_unbiased.mif --bzero | mrmath -mean mean_b0_processed.mif -axis 3
 mrconvert mean_b0_processed.mif mean_b0_processed.nii.gz
 mrconvert 5tt_nocoreg.mif 5tt_nocoreg.nii.gz
 
